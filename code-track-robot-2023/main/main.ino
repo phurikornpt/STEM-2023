@@ -105,17 +105,17 @@ void control_manual() {
 
 
 String state_test = "";
-int servo_test = 0;
+int value_test = 0;
 void tryToTest() {
   if (Serial.available() > 0) {
     String msg = Serial.readStringUntil('\n');
     state_test = msg;
     if (msg.substring(0, 2) == "sv") {
       state_test = "sv";
-      servo_test = msg.substring(2, msg.length()).toInt();
+      value_test = msg.substring(2, msg.length()).toInt();
     } else if (msg.substring(0, 2) == "ml" || msg.substring(0, 2) == "mr") {
       state_test = msg.substring(0, 2);
-      servo_test = msg.substring(2, msg.length()).toInt();
+      value_test = msg.substring(2, msg.length()).toInt();
     }
   }
   if (state_test == "sa") {
@@ -123,14 +123,14 @@ void tryToTest() {
   } else if (state_test == "sd") {
     trySensor('D');
   } else if (state_test == "ml") {
-    motorL(servo_test);
-    Serial.println("motorL  " + String(servo_test));
+    motorL(value_test);
+    Serial.println("motorL  " + String(value_test));
   } else if (state_test == "mr") {
-    motorR(servo_test);
-    Serial.println("motorR  " + String(servo_test));
+    motorR(value_test);
+    Serial.println("motorR  " + String(value_test));
   } else if (state_test == "sv") {
-    Serial.println("Server : " + String(servo_test));
-    myservo.write(servo_test);
+    Serial.println("Server : " + String(value_test));
+    myservo.write(value_test);
   } else if (state_test == "led") {
     tryLed();
   } else if (state_test == "sw") {
