@@ -5,10 +5,10 @@
 #include "PinZone.h"
 
 /* ------------------- < Define max , min of sensor & find mid > ------------------- */
-// unsigned int Max_Sensordata[5] = { 789, 719, 717, 638, 403 };
-// unsigned int Min_Sensordata[5] = { 120, 60, 57, 48, 39 };
-unsigned int Max_Sensordata[5] = {868  , 826 , 735 , 832 , 601};
-unsigned int Min_Sensordata[5] = { 369 , 184 , 73 , 216 , 113 };
+unsigned int Max_Sensordata[5] = { 789, 719, 717, 638, 403 };
+unsigned int Min_Sensordata[5] = { 120, 60, 57, 48, 39 };
+// unsigned int Max_Sensordata[5] = {868  , 826 , 735 , 832 , 601};
+// unsigned int Min_Sensordata[5] = { 369 , 184 , 73 , 216 , 113 };
 unsigned int Mid_Sensor1 = ((Max_Sensordata[0] - Min_Sensordata[0]) / 2) + Min_Sensordata[0];
 unsigned int Mid_Sensor2 = ((Max_Sensordata[1] - Min_Sensordata[1]) / 2) + Min_Sensordata[1];
 unsigned int Mid_Sensor3 = ((Max_Sensordata[2] - Min_Sensordata[2]) / 2) + Min_Sensordata[2];

@@ -7,7 +7,7 @@
 #define pinServo 10
 
 #define servoKeep 0
-#define servoLeave 100
+#define servoLeave 60
 
 /*  ---------------------------- Switch ---------------------------- */
 #define pinSw1 2

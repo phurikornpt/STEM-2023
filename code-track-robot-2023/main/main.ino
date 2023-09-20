@@ -56,7 +56,11 @@ void example_point1() {
   snappish_motor(100, 500);
 }
 void loop() {
+  // control_manual();
+  // printJoy();
   tryToTest();
+  // motorL(100);
+  // motorR(100);
   // if (digitalRead(pinSw1) == 0) {
   //   while (1) {
   //     example_point1();
@@ -75,6 +79,7 @@ void loop() {
 /* ------------------- < Zone Function Test Robot > ------------------- */
 
 void control_manual() {
+  getJoy();
   if (swForward == 0 && swBackward == 1 && swLeft == 1 && swRight == 1) {
     motorL(100);
     motorR(100);
@@ -108,24 +113,21 @@ void tryToTest() {
     if (msg.substring(0, 2) == "sv") {
       state_test = "sv";
       servo_test = msg.substring(2, msg.length()).toInt();
+    } else if (msg.substring(0, 2) == "ml" || msg.substring(0, 2) == "mr") {
+      state_test = msg.substring(0, 2);
+      servo_test = msg.substring(2, msg.length()).toInt();
     }
   }
   if (state_test == "sa") {
     trySensor('A');
   } else if (state_test == "sd") {
     trySensor('D');
-  } else if (state_test == "mlf") {
-    tryMotorL('F');
-  } else if (state_test == "mlb") {
-    tryMotorL('B');
-  } else if (state_test == "mls") {
-    tryMotorL('S');
-  } else if (state_test == "mrf") {
-    tryMotorR('F');
-  } else if (state_test == "mrb") {
-    tryMotorR('B');
-  } else if (state_test == "mrs") {
-    tryMotorR('S');
+  } else if (state_test == "ml") {
+    motorL(servo_test);
+    Serial.println("motorL  " + String(servo_test));
+  } else if (state_test == "mr") {
+    motorR(servo_test);
+    Serial.println("motorR  " + String(servo_test));
   } else if (state_test == "sv") {
     Serial.println("Server : " + String(servo_test));
     myservo.write(servo_test);
