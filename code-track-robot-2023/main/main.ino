@@ -9,8 +9,9 @@
 /* ------------------- < Zone Variable Servo > ------------------- */
 Servo myservo;
 
-/* ------------------- < Zone Variable Sensor > ------------------- */
 
+
+/* ------------------- < Zone Variable Sensor > ------------------- */
 unsigned int analog_sensor1 = 0;
 unsigned int analog_sensor2 = 0;
 unsigned int analog_sensor3 = 0;
@@ -40,54 +41,25 @@ void setup() {
 }
 
 
-void example_point1() {
-  moveFind_line(80);
-  moveToLine_with_midSensor(80, 4);
-  spinFontSensor(70, 'L');
-  moveToLine_with_midSensor(80, 1);
-  spinFontSensor(70, 'R');
-  moveToLine_with_midSensor(80, 1);
-  moveToKeep_Object(80);
-  moveToLine_with_midSensor(80, 3);
-  spinFontSensor(70, 'R');
-  moveToLeave_Object(100);
-  spinFontSensor(70, 'R');
-  spinFontSensor(70, 'R');
-  moveToLine_with_midSensor(80, 3);
-  spinFontSensor(70, 'R');
-  snappish_motor(70, 500);
-}
-
-
 void loop() {
-  // control_manual();
-  // printJoy();
-  
+
   tryToTest();
- 
-
-
-
+  
   if (digitalRead(pinSw1) == 0) {
     while (1) {
-      example_point1();
+      break;
     }
   }
 
-
-
-
-  
   if (digitalRead(pinSw2) == 0) {
-
     while (1) {
-      tracker_line_basic(60);
+      break;
     }
   }
 }
 
-/* ------------------- < Zone Function Test Robot > ------------------- */
 
+/* ------------------- < Zone Function Manual Robot > ------------------- */
 void control_manual() {
   getJoy();
   if (swForward == 0 && swBackward == 1 && swLeft == 1 && swRight == 1) {
@@ -114,6 +86,7 @@ void control_manual() {
 }
 
 
+/* ------------------- < Zone Function Test Robot > ------------------- */
 String state_test = "";
 int value_test = 0;
 void tryToTest() {
@@ -211,13 +184,10 @@ void trySensor(char type) {
       printSensor_Analog();
       break;
   }
-  // printSensor_Digital();
 }
-
 void trySwitch() {
   Serial.print("Switch : ");
   Serial.print(digitalRead(pinSw1));
   Serial.print(" , ");
   Serial.println(digitalRead(pinSw2));
-  // printSensor_Digital();
 }

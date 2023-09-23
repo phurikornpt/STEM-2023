@@ -5,10 +5,11 @@
 #include "PinZone.h"
 
 /* ------------------- < Define max , min of sensor & find mid > ------------------- */
-unsigned int Max_Sensordata[5] = {785  , 751 , 676 , 919 , 704 };
-unsigned int Min_Sensordata[5] = {192 , 185 , 128 , 653 , 67};
-// unsigned int Max_Sensordata[5] = {868  , 826 , 735 , 832 , 601};
-// unsigned int Min_Sensordata[5] = { 369 , 184 , 73 , 216 , 113 };
+// REF
+unsigned int Max_Sensordata[5] = {462 ,729 , 768 , 653, 820};
+unsigned int Min_Sensordata[5] = {56 , 81 , 77 , 64 , 296};
+
+
 unsigned int Mid_Sensor1 = ((Max_Sensordata[0] - Min_Sensordata[0]) / 2) + Min_Sensordata[0];
 unsigned int Mid_Sensor2 = ((Max_Sensordata[1] - Min_Sensordata[1]) / 2) + Min_Sensordata[1];
 unsigned int Mid_Sensor3 = ((Max_Sensordata[2] - Min_Sensordata[2]) / 2) + Min_Sensordata[2];
@@ -25,6 +26,9 @@ int Hysteresis_Sensor = 40;
 */
 
 void getSensor() {
+  /*
+    Read sensor
+  */
   analog_sensor1 = analogRead(pinSensor1);
   analog_sensor2 = analogRead(pinSensor2);
   analog_sensor3 = analogRead(pinSensor3);
@@ -42,6 +46,7 @@ void getSensor() {
   if (analog_sensor5 > Mid_Sensor5 + Hysteresis_Sensor) digital_sensor5 = 0;
   else if (analog_sensor5 < Mid_Sensor5 - Hysteresis_Sensor) digital_sensor5 = 1;
 }
+
 void printSensor_Digital() {
   getSensor();
   Serial.print("Digital Sensor : ");
@@ -77,6 +82,7 @@ void getJoy() {
   swKeep = digitalRead(pinJoy_Keep);
   swLeave = digitalRead(pinJoy_Leave);
 }
+
 void printJoy() {
   getJoy();
   Serial.print("Joy Switch : ");

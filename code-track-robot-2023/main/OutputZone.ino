@@ -10,6 +10,9 @@
 
 int Robot_position = 0;
 
+/*------------------------------------------------------------------
+  Trackline with Basic Code
+  ------------------------------------------------------------------*/
 void tracker_line_basic(int speedx) {
   /*check sensor determine digital_sensor[All] */
   getSensor();
@@ -53,15 +56,33 @@ void tracker_line_basic(int speedx) {
 }
 
 
-// PID ZONE
+/*------------------------------------------------------------------
+  Trackline with PID Code
+  PID คือระบบการควบคุมที่มองที่ Error
+  Kp = การขยาย Error 
+       ถ้า Kp มากจะทำให้ Robot เข้าเส้นได้เร็วขึ้น
+       ถ้า Kp น้อยจะทำให้ Robot เข้าเส้นได้ช้า
+  Ki = Error สะสม (ปกติในการเดินตามเส้น จะให้ Ki = 0)
+       ถ้า Ki มากจะทำให้ Robot เข้าเส้นได้เร็วขึ้นทวีคูณ  !! อาจทำให้ Robot เคลื่อนที่ผิดพลาดได้
+  Kd = การลดความเร็ว
+       ถ้า Kd มากจะทำให้ Robotเข้าเส้นได้ช้า เเต่เคลื่อนที่ได้สมูทมาก
+
+  หลักการจูน
+  1.เริ่มที่ Kp ที่ Robot สามารถเข้าเส้นตามที่เราพอใจ
+  2.ถ้าอยากให้ Robot เข้าเส้นแบบไม่เหวี่ยงจนเกินไป ให้ปรับ Kd 
+
+  ------------------------------------------------------------------*/
 int error = 0;
-double kp = 6.5, ki = 0, kd = 2.5;
+double kp = 8, ki = 0, kd = 1;
 int sumError, preError;
 void tracker_line_PID(int speedx) {
+  // Get sensor
   getSensor();
+  // Define Error
   int error_1 = 5;
   int error_2 = 10;
 
+  // Condition for Error
   if (digital_sensor2 == 1 && digital_sensor3 == 0 && digital_sensor4 == 1) {
     error = 0;
   } else if (digital_sensor2 == 1 && digital_sensor3 == 0 && digital_sensor4 == 0) {
@@ -76,7 +97,7 @@ void tracker_line_PID(int speedx) {
     error = preError;
   }
 
-
+  // Cal
   int speed = (kp * error) + (ki * sumError) + (kd * (error - preError));
   int leftSpeed = speedx + speed;
   int rightSpeed = speedx - speed;
@@ -101,6 +122,10 @@ void tracker_line_PID(int speedx) {
     sumError += error;
   }
 }
+
+/*------------------------------------------------------------------
+  เหมุน Robot โดยใช้ Sensor หน้า 3ตัว เเบบจับเวลา
+  ------------------------------------------------------------------*/
 void spinFontSensor_with_timer(int speed) {
   int spinline = 0;
   unsigned long counter = millis();
@@ -132,6 +157,10 @@ void spinFontSensor_with_timer(int speed) {
     }
   }
 }
+
+/*------------------------------------------------------------------
+  เหมุน Robot โดยใช้ Sensor หน้า 3ตัว เเบบใช้หลักนับจำนวนรอบการเข้า
+  ------------------------------------------------------------------*/
 void spinFontSensor_with_deboud(int speed) {
   int spinline = 0;
   int spinline_deboud = 20;
@@ -174,6 +203,10 @@ void spinFontSensor_with_deboud(int speed) {
     }
   }
 }
+
+/*------------------------------------------------------------------
+  เหมุน Robot โดยใช้ Sensor กลาง 2ตัว เเบบใช้หลักนับจำนวนรอบการเข้า
+  ------------------------------------------------------------------*/
 void spinMidSensor_with_deboud(int speed) {
   int spinline = 0;
   int spinline_deboud = 20;
@@ -211,6 +244,10 @@ void spinMidSensor_with_deboud(int speed) {
   }
 }
 
+
+/*------------------------------------------------------------------
+  หมุน Robot โดยใช้ Sensor หน้า 3ตัว เเบบแปลง Function ให้รับ (ความเร็ว , ทิศทาง)ให้ง่ายต่อการใช้
+  ------------------------------------------------------------------*/
 void spinFontSensor(int speed, char direct) {
   switch (direct) {
     case 'L':
@@ -221,6 +258,10 @@ void spinFontSensor(int speed, char direct) {
       break;
   }
 }
+
+/*------------------------------------------------------------------
+  หมุน Robot โดยใช้ Sensor กลาง 2ตัว เเบบแปลง Function ให้รับ (ความเร็ว , ทิศทาง)ให้ง่ายต่อการใช้
+  ------------------------------------------------------------------*/
 void spinMidSensor(int speed, char direct) {
   switch (direct) {
     case 'L':
@@ -232,12 +273,34 @@ void spinMidSensor(int speed, char direct) {
   }
 }
 
+/*------------------------------------------------------------------
+  หมุน Robot โดยใช้ Sensor หน้า 3ตัว เเบบแปลง Function ให้รับ (ความเร็ว , ทิศทาง , จำนวนรอบการหมุน)ให้ง่ายต่อการใช้
+  ------------------------------------------------------------------*/
+void spinFontSensor_count(int speed, char direct, int num) {
+  for (int i = 0; i < num; i++) {
+    spinFontSensor(speed, direct);
+  }
+}
 
-void moveToLine_with_midSensor(int speedx, int count) {
+/*------------------------------------------------------------------
+  หมุน Robot โดยใช้ Sensor กลาง 2 ตัว เเบบแปลง Function ให้รับ (ความเร็ว , ทิศทาง , จำนวนรอบการหมุน)ให้ง่ายต่อการใช้
+  ------------------------------------------------------------------*/
+void spinMidSensor_count(int speed, char direct, int num) {
+  for (int i = 0; i < num; i++) {
+    spinMidSensor(speed, direct);
+  }
+}
+
+
+/*------------------------------------------------------------------
+  เดินตามเส้นของ Robot ให้นับเส้นตัด โดยใช้ Sensor กลาง 2 ตัว 
+  Function ให้รับ (ความเร็ว , จำนวนเส้นตัด , ทิศทาง) -> ทิศทาง เมื่อเคลื่อนตามจำนวนเส้นตัดเเล้วให้หมุนตามทิศทาง
+  ------------------------------------------------------------------*/
+void moveToLine_with_midSensor(int speedx, int count, char direction) {
   unsigned long counter = millis();
   int linecount = 0;
   int debount_inline = 0;
-  snappish_motor(speedx, 150);
+  snappish_motor(100, 80);
   while (1) {
     getSensor();
     if (linecount >= count) {
@@ -252,7 +315,7 @@ void moveToLine_with_midSensor(int speedx, int count) {
       debount_inline = 0;
     }
 
-    if (debount_inline > 3) {
+    if (debount_inline > 5) {
       linecount++;
       counter = millis();
       debount_inline = 0;
@@ -260,7 +323,13 @@ void moveToLine_with_midSensor(int speedx, int count) {
     // tracker_line_basic(speedx);
     tracker_line_PID(speedx);
   }
+  spinFontSensor(speedx, direction);
 }
+
+/*------------------------------------------------------------------
+  เดินตามเส้นของ Robot ให้นับเส้นตัด โดยใช้ Sensor หน้า 2 ตัว 
+  Function ให้รับ (ความเร็ว , จำนวนเส้นตัด )
+  ------------------------------------------------------------------*/
 void moveToLine_with_FontSensor(int speedx, int count) {
   unsigned long counter = millis();
   int linecount = 0;
@@ -289,6 +358,10 @@ void moveToLine_with_FontSensor(int speedx, int count) {
   }
 }
 
+/*------------------------------------------------------------------
+  เดินหาเส้นของจนกว่า Sensor หน้า 3 ตัวเจอเส้น
+  Function ให้รับ (ความเร็ว )
+  ------------------------------------------------------------------*/
 void moveFind_line(int speedx) {
   getSensor();
   while (digital_sensor2 == 1 && digital_sensor3 == 1 && digital_sensor4 == 1) {
@@ -299,37 +372,42 @@ void moveFind_line(int speedx) {
   motorR(0);
   motorL(0);
 }
-void moveToCross(int speed) {
-  motorR(speed);
-  motorL(speed);
-  delay(200);
-  while (1) {
-    getSensor();
-    if (digital_sensor1 == 0 || digital_sensor5 == 0) break;
-  }
-  motorR(0);
-  motorL(0);
-}
 
+
+/*------------------------------------------------------------------
+  ให้ Robot วิ่งไปข้างหน้า 1 เส้นตัด ด้วย Sensor กลาง 2 ตัว 
+  จากนั้นหยิบชิ้นงาน
+  Function ให้รับ (ความเร็ว)
+  ------------------------------------------------------------------*/
 void moveToKeep_Object(int speed) {
-  moveToLine_with_midSensor(speed, 1);
+  moveToLine_with_midSensor(speed, 1, 'N');
   myservo.write(servoKeep);
 }
+
+/*------------------------------------------------------------------
+  ให้ Robot วิ่งไปข้างหน้า 1 เส้นตัด ด้วย Sensor หน้า 3 ตัว 
+  จากนั้นปล่อยชิ้นงาน 
+  หยุดรอ 200 ms
+  ถอยหลังตามความเร็ว Delay(80)
+  จากนั้นหมุนขวา 1 รอบ
+  Function ให้รับ (ความเร็ว)
+  ------------------------------------------------------------------*/
 void moveToLeave_Object(int speed) {
   moveToLine_with_FontSensor(speed, 1);
-  snappish_motor(-speed, 100);
   myservo.write(servoLeave);
-  moveToCross(-speed);
+  delay(200);
+  snappish_motor(-speed, 80);
+  spinFontSensor(speed, 'R');
 }
 
+
+/*------------------------------------------------------------------
+  ให้ Robot วิ่งเเบบหน่วงเวลา 
+  Function ให้รับ (ความเร็ว , เวลา ที่ต้องการหน่วงเวลา)
+  ------------------------------------------------------------------*/
 void snappish_motor(int speed, int time_delay) {
-  if (speed > 0) {
-    motorR(100);
-    motorL(100);
-  } else {
-    motorR(-100);
-    motorL(-100);
-  }
+  motorR(speed);
+  motorL(speed);
   delay(time_delay);
   motorR(0);
   motorL(0);
