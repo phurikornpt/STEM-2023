@@ -36,44 +36,54 @@ void setup() {
   // setup_inputManualBot();
   setup_outputBot();
   myservo.attach(pinServo);
-  myservo.write(servoKeep);
+  myservo.write(servoLeave);
 }
+
+
 void example_point1() {
-  moveFind_line(100);
-  moveToLine_with_midSensor(100, 4);
+  moveFind_line(80);
+  moveToLine_with_midSensor(80, 4);
   spinFontSensor(70, 'L');
-  moveToLine_with_midSensor(100, 1);
+  moveToLine_with_midSensor(80, 1);
   spinFontSensor(70, 'R');
-  moveToLine_with_midSensor(100, 1);
-  moveToKeep_Object(100);
-  moveToLine_with_midSensor(100, 3);
+  moveToLine_with_midSensor(80, 1);
+  moveToKeep_Object(80);
+  moveToLine_with_midSensor(80, 3);
   spinFontSensor(70, 'R');
   moveToLeave_Object(100);
   spinFontSensor(70, 'R');
   spinFontSensor(70, 'R');
-  moveToLine_with_midSensor(100, 3);
+  moveToLine_with_midSensor(80, 3);
   spinFontSensor(70, 'R');
-  snappish_motor(100, 500);
+  snappish_motor(70, 500);
 }
+
+
 void loop() {
   // control_manual();
   // printJoy();
+  
   tryToTest();
-  // motorL(100);
-  // motorR(100);
-  // if (digitalRead(pinSw1) == 0) {
-  //   while (1) {
-  //     example_point1();
-  //     break;
-  //   }
-  // }
-  // if (digitalRead(pinSw2) == 0) {
-  //   tryMotorR('F');
+ 
 
-  //   while (1) {
-  //     tracker_line_basic(30);
-  //   }
-  // }
+
+
+  if (digitalRead(pinSw1) == 0) {
+    while (1) {
+      example_point1();
+    }
+  }
+
+
+
+
+  
+  if (digitalRead(pinSw2) == 0) {
+
+    while (1) {
+      tracker_line_basic(60);
+    }
+  }
 }
 
 /* ------------------- < Zone Function Test Robot > ------------------- */

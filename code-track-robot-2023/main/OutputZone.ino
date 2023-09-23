@@ -55,7 +55,7 @@ void tracker_line_basic(int speedx) {
 
 // PID ZONE
 int error = 0;
-double kp = 2, ki = 0, kd = 20;
+double kp = 6.5, ki = 0, kd = 2.5;
 int sumError, preError;
 void tracker_line_PID(int speedx) {
   getSensor();
