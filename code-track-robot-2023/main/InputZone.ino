@@ -6,8 +6,10 @@
 
 /* ------------------- < Define max , min of sensor & find mid > ------------------- */
 // REF
-unsigned int Max_Sensordata[5] = {462 ,729 , 768 , 653, 820};
-unsigned int Min_Sensordata[5] = {56 , 81 , 77 , 64 , 296};
+// unsigned int Max_Sensordata[5] = {462 ,729 , 768 , 653, 820};
+// unsigned int Min_Sensordata[5] = {56 , 81 , 77 , 64 , 296};
+unsigned int Max_Sensordata[5] = { 501, 770, 773, 691, 809 };
+unsigned int Min_Sensordata[5] = { 58, 99, 87, 68, 331 };
 
 
 unsigned int Mid_Sensor1 = ((Max_Sensordata[0] - Min_Sensordata[0]) / 2) + Min_Sensordata[0];
@@ -115,7 +117,6 @@ void setup_inputAutoBot() {
   pinMode(pinJoy_Right, INPUT_PULLUP);
   pinMode(pinJoy_Keep, INPUT_PULLUP);
   pinMode(pinJoy_Leave, INPUT_PULLUP);
-
 }
 void setup_inputManualBot() {
 

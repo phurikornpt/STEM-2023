@@ -40,22 +40,38 @@ void setup() {
   myservo.write(servoLeave);
 }
 
+void example1() {
+  moveToLine_with_midSensor(80, 1, 'L');
+
+  moveToLine_with_midSensor(80, 3, 'N');
+  moveToKeep_Object(60);
+
+
+  spinFontSensor_count(60, 'R', 2);
+
+  
+  moveToLine_with_midSensor(80, 1, 'L');
+  moveToLine_with_midSensor(80, 2, 'N');
+
+  moveToLeave_Object(60);
+  moveToLine_with_midSensor(80,4, 'L');
+  moveToLine_with_midSensor(80,2, 'N');
+  snappish_motor(100,300);
+}
 
 void loop() {
 
   tryToTest();
-  
+
   if (digitalRead(pinSw1) == 0) {
-    while (1) {
-      break;
-    }
+    example1();
   }
 
-  if (digitalRead(pinSw2) == 0) {
-    while (1) {
-      break;
-    }
-  }
+  // if (digitalRead(pinSw2) == 0) {
+  //   while (1) {
+  //     break;
+  //   }
+  // }
 }
 
 
@@ -190,4 +206,53 @@ void trySwitch() {
   Serial.print(digitalRead(pinSw1));
   Serial.print(" , ");
   Serial.println(digitalRead(pinSw2));
+}
+void example_A() {
+  int conSpeed = 70;
+  // A
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 3, 'N');
+  moveToKeep_Object(100);
+  spinFontSensor_count(60, 'R', 2);
+
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 2, 'N');
+  moveToLeave_Object(60);
+  moveToLine_with_midSensor(conSpeed, 2, 'L');
+
+  // B
+  moveToKeep_Object(80);
+  spinFontSensor_count(80, 'R', 2);
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+  moveToLine_with_midSensor(conSpeed, 2, 'R');
+
+
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+  moveToLine_with_midSensor(conSpeed, 3, 'R');
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+  moveToLine_with_midSensor(conSpeed, 2, 'R');
+  moveToLine_with_midSensor(conSpeed, 1, 'N');
+  moveToLeave_Object(60);
+
+  // C
+  moveToLine_with_midSensor(conSpeed, 2, 'L');
+  moveToLine_with_midSensor(conSpeed, 2, 'L');
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 3, 'L');
+  moveToLine_with_midSensor(conSpeed, 2, 'R');
+  moveToKeep_Object(80);
+  spinFontSensor_count(80, 'R', 2);
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 1, 'R');
+
+  moveToLeave_Object(60);
+  moveToLine_with_midSensor(conSpeed, 1, 'L');
+  moveToLine_with_midSensor(conSpeed, 4, 'N');
+
+  // Delay Go End
+  snappish_motor(100, 400);
 }
